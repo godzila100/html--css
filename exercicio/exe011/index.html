@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MassoTherapy Pro | Bem-Estar e Saúde</title>
+    <style>
+        /* ==========================================================================
+           1. ESTILOS GERAIS (style.css)
+           ========================================================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        :root {
+            --cor-principal: #4A5D4E;
+            --cor-secundaria: #8F9E8B;
+            --cor-fundo: #FDFBF7;
+            --cor-texto: #333333;
+            --cor-clara: #FFFFFF;
+            --cor-escura: #2C352E;
+            --transicao: all 0.4s ease;
+        }
+
+        body {
+            background-color: var(--cor-fundo);
+            color: var(--cor-texto);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* GERENCIADOR DE PÁGINAS (SPA) */
+        .page-section {
+            display: none;
+            padding: 80px 0;
+        }
+
+        .page-section.active-page {
+            display: block;
+        }
+
+        /* HEADER & NAVEGAÇÃO */
+        .main-header {
+            background-color: var(--cor-clara);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: var(--transicao);
+        }
+
+        .main-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .logo a {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--cor-principal);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--cor-secundaria);
+            font-weight: 300;
+        }
+
+        .nav-menu ul {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-menu ul li {
+            margin-left: 20px;
+        }
+
+        .nav-menu ul li a {
+            text-decoration: none;
+            color: var(--cor-texto);
+            font-size: 15px;
+            cursor: pointer;
+            transition: var(--transicao);
+        }
+
+        .nav-menu ul li a:hover, 
+        .nav-menu ul li a.active {
+            color: var(--cor-principal);
+            font-weight: bold;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 28px;
+            color: var(--cor-principal);
+            cursor: pointer;
+        }
+
+        /* COMPONENTES REUTILIZÁVEIS */
+        .btn-primary {
+            display: inline-block;
+            background-color: var(--cor-principal);
+            color: var(--cor-clara);
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: var(--transicao);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--cor-secundaria);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 32px;
+            color: var(--cor-principal);
+            margin-bottom: 40px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: var(--cor-clara);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            transition: var(--transicao);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+
+        /* ==========================================================================
+           2. ESTILOS DAS SEÇÕES ESPECÍFICAS
+           ========================================================================== */
+        /* Home (Hero) */
+        .hero-banner {
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('img/banner.jpg') no-repeat center center/cover;
+            background-color: #556b2f; 
+            height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--cor-clara);
+            padding: 0 20px;
+        }
+
+        .hero-content h1 { font-size: 48px; margin-bottom: 20px; }
+        .hero-content p { font-size: 18px; margin-bottom: 30px; }
+
+        /* Galeria */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        .gallery-item {
+            height: 250px;
+            background: var(--cor-secundaria);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Formulários (Contato) */
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--cor-clara);
+            padding: 40px;
+            border-radius: 8px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        /* FAQ Accordion */
+        .faq-item {
+            background: var(--cor-clara);
+            margin-bottom: 15px;
+            padding: 20px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .faq-question {
+            font-weight: bold;
+            color: var(--cor-principal);
+        }
+        .faq-answer {
+            display: none;
+            margin-top: 10px;
+            color: #666;
+        }
+
+        /* RODAPÉ */
+        .main-footer {
+            background-color: var(--cor-escura);
+            color: #D1D7D3;
+            padding: 60px 0 20px 0;
+            margin-top: auto;
+        }
+        .footer-grid { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 30px; }
+        .footer-links ul { list-style: none; }
+        .footer-links ul li a { color: #D1D7D3; text-decoration: none; cursor: pointer; }
+
+        /* ==========================================================================
+           3. ANIMAÇÕES (animacoes.css) & RESPONSIVO (responsivo.css)
+           ========================================================================== */
+        .fade-in {
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media screen and (max-width: 768px) {
+            .main-header .container { display: block; text-align: center; }
+            .menu-toggle { display: block; margin: 10px auto; }
+            .nav-menu { display: none; width: 100%; }
+            .nav-menu.active { display: block; }
+            .nav-menu ul { display: block; }
+            .nav-menu ul li { margin: 15px 0; }
+            .footer-grid { display: block; text-align: center; }
+            .footer-info, .footer-links { margin-bottom: 30px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="container">
+            <div class="logo">
+                <a data-target="home">MassoTherapy<span>Pro</span></a>
+            </div>
+            <button class="menu-toggle" aria-label="Abrir Menu">&#9776;</button>
+            <nav class="nav-menu">
+                <ul>
+                    <li><a data-target="home" class="nav-link active">Home</a></li>
+                    <li><a data-target="sobre" class="nav-link">Sobre</a></li>
+                    <li><a data-target="servicos" class="nav-link">Serviços</a></li>
+                    <li><a data-target="massagens" class="nav-link">Massagens</a></li>
+                    <li><a data-target="equipe" class="nav-link">Equipe</a></li>
+                    <li><a data-target="galeria" class="nav-link">Galeria</a></li>
+                    <li><a data-target="blog" class="nav-link">Blog</a></li>
+                    <li><a data-target="faq" class="nav-link">FAQ</a></li>
+                    <li><a data-target="contato" class="nav-link">Contato</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        
+        <section id="home" class="page-section active-page">
+            <div class="hero-banner">
+                <div class="hero-content fade-in">
+                    <h1>Equilíbrio para o Corpo e a Mente</h1>
+                    <p>Descubra o poder do toque terapêutico e recupere sua qualidade de vida.</p>
+                    <button class="btn-primary" onclick="navigateTo('contato')">Agende sua Sessão</button>
+                </div>
+            </div>
+            <div class="container" style="padding: 60px 0; text-align: center;">
+                <h2>Bem-vindo ao MassoTherapy Pro</h2>
+                <p style="max-width: 700px; margin: 20px auto;">Cuidamos da sua saúde de forma integral. Navegue pelo nosso menu para conhecer nossos terapeutas, nossa estrutura e os tratamentos especializados que preparamos para você.</p>
+            </div>
+        </section>
+
+        <section id="sobre" class="page-section">
+            <div class="container fade-in">
+                <h2 class="section-title">Sobre a Clínica</h2>
+                <div class="card">
+                    <h3>Nossa Missão</h3>
+                    <p>Fundada com o propósito de reestabelecer o alinhamento físico e mental de nossos pacientes, a MassoTherapy Pro une técnicas milenares ao conhecimento anatômico moderno para aliviar dores estruturais, estresse crônico e fadiga diária.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="servicos" class="page-section">
+            <div class="container fade-in">
+                <h2 class="section-title">Nossos Serviços</h2>
+                <div class="grid-3">
+                    <div class="card">
+                        <h3>Atendimento Clínico</h3>
+                        <p>Tratamentos focados em dores crônicas, reabilitação muscular e correção postural.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Planos Corporativos</h3>
+                        <p>Levamos bem-estar e Quick Massage diretamente para sua empresa e colaboradores.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Day Spa</h3>
+                        <p>Pacotes completos de imersão de relaxamento com banhos aromáticos e massoterapia conjugada.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="massagens" class="page-section">
+            <div class="container fade-in">
+                <h2 class="section-title">Técnicas de Massagem</h2>
+                <div class="grid-3">
+                    <div class="card">
+                        <h3>Massagem Relaxante</h3>
+                        <p>Movimentos suaves para diminuir o cortisol, aliviar tensões superficiais e induzir o sono profundo.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Liberação Miofascial</h3>
+                        <p>Foco na fáscia muscular para atletas e pessoas com rigidez muscular acentuada.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Drenagem Linfática</h3>
+                        <p>Estimulação do sistema linfático para redução de retenção de líquidos e eliminação de toxinas.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="equipe" class="page-section">
+            <div class="container fade-in">
+                <h2 class="section-title">Nossos Especialistas</h2>
+                <div class="grid-3">
+                    <div class="card" style="text-align: center;">
+                        <div style="width:100px; height:100px; background:#ddd; border-radius:50%; margin:0 auto 15px;"></div>
+                        <h3>Dra. Helena Souza</h3>
+                        <p>Especialista em Quiropraxia e Massagem Desportiva.</p>
+                    </div>
+                    <div class="card" style="text-align: center;">
+                        <div style="width:100px; height:100px; background:#ddd; border-radius:50%; margin:0 auto 15px;"></div>
+                        <h3>Marcelo Silva</h3>
+                        <p>Terapeuta especializado em Técnicas Orientais e Shiatsu.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="galeria" class="page-section">
+            <div class="container fade-in">
+                <h2 class="section-title">Nosso Espaço</h2>
+                <div class="gallery-grid">
+                    <div class="gallery-item">Sala de Atendimento 1</div>
+                    <div class="gallery-item">Recepção Zen</div>
+                    <div class="gallery-item">Espaço Zen e Ofurô</div>
+                    <div class="gallery-item">Equipamentos Modernos</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="blog" class="page-section">
+            <div class="container fade-in">
+                <h2 class="section-title">Blog & Dicas de Saúde</h2>
+                <div class="grid-3">
+                    <div class="card">
+                        <h4>5 Benefícios da Massagem Postural</h4>
+                        <p style="font-size: 14px; color:#777; margin-bottom:10px;">Postado em 2026</p>
+                        <p>Entenda como pequenas sessões semanais podem corrigir anos de má postura no escritório...</p>
+                    </div>
+                    <div class="card">
+                        <h4>O que é a Liberação Miofascial?</h4>
+                        <p style="font-size: 14px; color:#777; margin-bottom:10px;">Postado em 2026</p>
+                        <p>Descubra por que os atletas profissionais não abrem mão dessa técnica dolorosa, mas milagrosa...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="faq" class="page-section">
+            <div class="container fade-in">
+                <h2 class="section-title">Perguntas Frequentes</h2>
+                <div style="max-width: 800px; margin: 0 auto;">
+                    <div class="faq-item">
+                        <div class="faq-question">Preciso levar alguma roupa específica para a sessão?</div>
+                        <div class="faq-answer">Não é necessário. Fornecemos roupões, toalhas descartáveis e vestimenta apropriada higienizada para cada atendimento.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">Qual a frequência ideal para fazer massoterapia?</div>
+                        <div class="faq-answer">Para fins preventivos e relaxamento, sessões quinzenais são excelentes. Para tratamentos de dores crônicas, recomenda-se periodicidade semanal na fase inicial.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contato" class="page-section">
+            <div class="container fade-in">
+                <h2 class="section-title">Agende um Atendimento</h2>
+                <form class="contact-form" onsubmit="event.preventDefault(); alert('Mensagem enviada com sucesso! Entraremos em contato em breve.');">
+                    <div class="form-group">
+                        <label>Nome Completo</label>
+                        <input type="text" required placeholder="Seu nome">
+                    </div>
+                    <div class="form-group">
+                        <label>WhatsApp / Telefone</label>
+                        <input type="tel" required placeholder="(00) 00000-0000">
+                    </div>
+                    <div class="form-group">
+                        <label>Mensagem / Preferência de Horário</label>
+                        <textarea rows="5" placeholder="Conte-nos o que você precisa aliviar no momento..."></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary" style="width: 100%;">Enviar Solicitação</button>
+                </form>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="main-footer">
+        <div class="container footer-grid">
+            <div class="footer-info">
+                <h3>MassoTherapy Pro</h3>
+                <p>Sua saúde em mãos profissionais.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Navegação</h4>
+                <ul style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <li><a onclick="navigateTo('sobre')">Sobre</a></li>
+                    <li><a onclick="navigateTo('servicos')">Serviços</a></li>
+                    <li><a onclick="navigateTo('massagens')">Massagens</a></li>
+                    <li><a onclick="navigateTo('faq')">Dúvidas</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="container" style="text-align: center; margin-top: 30px; border-top: 1px solid #3D4940; padding-top: 20px;">
+            <p>&copy; 2026 MassoTherapy Pro. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Lógica do Menu Hambúrguer (Mobile)
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navMenu = document.querySelector('.nav-menu');
+
+            menuToggle.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+                menuToggle.innerHTML = navMenu.classList.contains('active') ? '&times;' : '&#9776;';
+            });
+
+            // Gerenciador de Navegação entre abas/páginas (SPA)
+            const navLinks = document.querySelectorAll('.nav-link, .logo a');
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    const targetPage = link.getAttribute('data-target');
+                    navigateTo(targetPage);
+                    
+                    // Fecha menu móvel ao clicar
+                    if(navMenu.classList.contains('active')) {
+                        navMenu.classList.remove('active');
+                        menuToggle.innerHTML = '&#9776;';
+                    }
+                });
+            });
+
+            // Comportamento do Accordion do FAQ
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const answer = item.querySelector('.faq-answer');
+                    const isVisible = answer.style.display === 'block';
+                    
+                    // Esconde os outros abertos para ficar organizado
+                    document.querySelectorAll('.faq-answer').forEach(ans => ans.style.display = 'none');
+                    
+                    answer.style.display = isVisible ? 'none' : 'block';
+                });
+            });
+        });
+
+        // Função Global de navegação interna
+        function navigateTo(pageId) {
+            // Remove classe ativa de todas as seções
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.remove('active-page');
+            });
+            
+            // Ativa a seção clicada
+            const targetSection = document.getElementById(pageId);
+            if(targetSection) {
+                targetSection.classList.add('active-page');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            // Atualiza o estado visual do menu superior
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+                if(link.getAttribute('data-target') === pageId) {
+                    link.classList.add('active');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
